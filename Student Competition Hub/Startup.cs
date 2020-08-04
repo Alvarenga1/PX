@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Student_Competition_Hub.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Student_Competition_Hub
 {

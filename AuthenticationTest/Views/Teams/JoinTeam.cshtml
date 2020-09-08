@@ -1,0 +1,34 @@
+﻿@model AuthenticationTest.Models.Team
+
+@{
+    ViewData["Title"] = "Join Team";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Join Team</h4>
+    <hr />
+    Are you sure you want to join this team ?
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="JoinTeam">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Join" class="btn btn-primary" />
+                <input asp-action="Index" type="button" value="Cancel" class="btn btn-secondary" />
+            </div>
+        </form>
+        <a asp-action="Index">Back to Teams</a>
+    </div>
+</div>
+@*
+<div>
+    <button asp-action="JoinTeam" asp-route-id="@Model.Id" type="submit" class="btn btn-primary">Join</button>
+    <button type="button" class="btn btn-secondary">Cancel</button>
+
+    
+</div>*@

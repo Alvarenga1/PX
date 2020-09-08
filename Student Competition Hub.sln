@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Student Competition Hub", "Student Competition Hub\Student Competition Hub.csproj", "{9BBC5B88-DC85-4C45-94A4-7DA9269E7A10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Student Competition Hub", "AuthenticationTest\Student Competition Hub.csproj", "{73FE9650-EC8D-434D-A255-543F16289465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9BBC5B88-DC85-4C45-94A4-7DA9269E7A10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BBC5B88-DC85-4C45-94A4-7DA9269E7A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BBC5B88-DC85-4C45-94A4-7DA9269E7A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BBC5B88-DC85-4C45-94A4-7DA9269E7A10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73FE9650-EC8D-434D-A255-543F16289465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73FE9650-EC8D-434D-A255-543F16289465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73FE9650-EC8D-434D-A255-543F16289465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73FE9650-EC8D-434D-A255-543F16289465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BB55282E-A59C-415C-B39B-269140E66A64}
+		SolutionGuid = {E35F0A61-C9B3-4E16-A294-DA8BD0947A4A}
 	EndGlobalSection
 EndGlobal

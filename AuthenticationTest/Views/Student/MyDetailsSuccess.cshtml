@@ -1,0 +1,25 @@
+﻿@model AuthenticationTest.Models.Student
+
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "MyDetailsSuccess";
+}
+
+<h2>My Details</h2>
+
+<h4>Hi, @UserManager.GetUserName(User), your details are updated successfully as follows: </h4>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>

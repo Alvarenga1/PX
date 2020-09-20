@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
@@ -26,17 +27,20 @@ namespace AuthenticationTest.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context; //add
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -54,6 +58,12 @@ namespace AuthenticationTest.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+
+            [Required]
+            [RegularExpression(@"^[a-zA-Z'-]+$")]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -70,7 +80,7 @@ namespace AuthenticationTest.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-        
+            [Required]
             [Display(Name = "Role")]
             public string Role { get; set; }
 
@@ -93,8 +103,24 @@ namespace AuthenticationTest.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 //Adds user to role specified in the dropdownbox
                 await _userManager.AddToRoleAsync(user, Input.Role);
+                if (Input.Role == "Student")
+                {
+                    var student = new Student();
+                    student.Email = Input.Email;
+                    student.Name = Input.Name;
+                    _context.Add(student);
+                }
+                else if(Input.Role == "Staff")
+                {
+                    var staff = new Staff();
+                    staff.Email = Input.Email;
+                    staff.Name = Input.Name;
+                    _context.Add(staff);
+                }
 
-                
+                await _context.SaveChangesAsync();
+
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

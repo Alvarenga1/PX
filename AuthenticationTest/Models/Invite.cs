@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AuthenticationTest.Models
 {
-    public class Team
-    {
+    public class Invite
+{
         public int Id { get; set; }
         [Required]
-        public String Name { get; set; }
-        public Staff Supervisor { get; set; }
+        public Student InvitedStudent { get; set; }
+        [Required]
+        public Team Team { get; set; }
 
-        public String TeamLeaderEmail { get; set; }
-    }
+}
 }

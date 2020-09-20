@@ -21,5 +21,7 @@ namespace AuthenticationTest.Data
 
         public DbSet<AuthenticationTest.Models.Student> Student { get; set; }
 
+        public DbSet<AuthenticationTest.Models.Invite> Invite { get; set; }
+
     }
 }

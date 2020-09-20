@@ -57,7 +57,7 @@ namespace AuthenticationTest.Controllers
         [Authorize(Roles = "Staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Credit,Date")] Competition competition)
+        public async Task<IActionResult> Create([Bind("Id,Name,Credit,Date,Description")] Competition competition)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace AuthenticationTest.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Staff")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Credit,Date")] Competition competition)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Credit,Date,Description")] Competition competition)
         {
             if (id != competition.Id)
             {

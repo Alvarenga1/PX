@@ -32,7 +32,12 @@ namespace AuthenticationTest.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -40,20 +45,40 @@ namespace AuthenticationTest.Data.Migrations
                     b.ToTable("Competition");
                 });
 
-            modelBuilder.Entity("AuthenticationTest.Models.Staff", b =>
+            modelBuilder.Entity("AuthenticationTest.Models.Invite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("InvitedStudentEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InvitedStudentEmail");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Invite");
+                });
+
+            modelBuilder.Entity("AuthenticationTest.Models.Staff", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("Email");
 
                     b.ToTable("Staff");
                 });
@@ -85,20 +110,19 @@ namespace AuthenticationTest.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompetitionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SupervisorId")
-                        .HasColumnType("int");
+                    b.Property<string>("SupervisorEmail")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeamLeaderEmail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompetitionId");
-
-                    b.HasIndex("SupervisorId");
+                    b.HasIndex("SupervisorEmail");
 
                     b.ToTable("Team");
                 });
@@ -303,6 +327,21 @@ namespace AuthenticationTest.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("AuthenticationTest.Models.Invite", b =>
+                {
+                    b.HasOne("AuthenticationTest.Models.Student", "InvitedStudent")
+                        .WithMany()
+                        .HasForeignKey("InvitedStudentEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationTest.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AuthenticationTest.Models.Student", b =>
                 {
                     b.HasOne("AuthenticationTest.Models.Team", "Team")
@@ -312,13 +351,9 @@ namespace AuthenticationTest.Data.Migrations
 
             modelBuilder.Entity("AuthenticationTest.Models.Team", b =>
                 {
-                    b.HasOne("AuthenticationTest.Models.Competition", null)
-                        .WithMany("Teams")
-                        .HasForeignKey("CompetitionId");
-
                     b.HasOne("AuthenticationTest.Models.Staff", "Supervisor")
                         .WithMany()
-                        .HasForeignKey("SupervisorId");
+                        .HasForeignKey("SupervisorEmail");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

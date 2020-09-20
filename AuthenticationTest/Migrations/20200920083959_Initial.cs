@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AuthenticationTest.Data.Migrations
+namespace StudentCompetitionHub.Migrations
 {
-    public partial class migration4 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

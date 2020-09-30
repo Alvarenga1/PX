@@ -23,5 +23,15 @@ namespace AuthenticationTest.Data
 
         public DbSet<AuthenticationTest.Models.Invite> Invite { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Team>().ToTable("Team");
+            modelBuilder.Entity<Competition>().ToTable("Competition");
+            modelBuilder.Entity<Staff>().ToTable("Staff");
+            modelBuilder.Entity<Invite>().ToTable("Invite");
+            modelBuilder.Entity<Student>().ToTable("Student");
+        }
+
     }
 }

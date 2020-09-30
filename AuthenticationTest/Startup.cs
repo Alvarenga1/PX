@@ -91,16 +91,6 @@ namespace AuthenticationTest
                 //here in this line we are creating admin role and seed it to the database
                 studentResult = await RoleManager.CreateAsync(new IdentityRole("Student"));
             }
-
-            //here we are assigning the Admin role to the User that we have registered above 
-            //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
-            //be assigned to that user.
-            IdentityUser staffUser = await UserManager.FindByEmailAsync("admin@gmail.com");
-            IdentityUser studentUser = await UserManager.FindByEmailAsync("Staff@gmail.com");
-            var User = new IdentityUser();
-            await UserManager.AddToRoleAsync(staffUser, "Staff");
-            User = new IdentityUser();
-            await UserManager.AddToRoleAsync(studentUser, "Student");
         }
 
 

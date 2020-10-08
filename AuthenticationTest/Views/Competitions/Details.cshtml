@@ -5,10 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<div class="header">
+    <h1>Details</h1>
+</div>
 
 <div>
-    <h4>Competition</h4>
+        <h4>Competition</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -38,7 +44,7 @@
     </dl>
 </div>
 <div>
+    <a asp-action="Index" class="btn btn-back">Back to List</a> |
     @if (User.IsInRole("Staff"))
-    {<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>}
-    <a asp-action="Index">Back to List</a>
+    {<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-interact">Edit</a>}
 </div>

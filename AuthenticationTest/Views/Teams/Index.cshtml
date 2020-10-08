@@ -4,6 +4,9 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
 
 @if (ViewBag.invites != null)
 {
@@ -15,8 +18,8 @@
                     You have been invited to a team, @invite.Team.Name would like you to join their team.<br />
                     <div class="form-group">
                         <input type="hidden" name="id" value="@invite.Id" />
-                        <input type="submit" class="btn btn-primary" name="submit" value="Accept"/>
-                        <input type="button" class="btn btn-secondary" name="submit" value="Decline"/>
+                        <input type="submit" class="btn btn-interact" name="submit" value="Accept" />
+                        <input type="button" class="btn btn-back" name="submit" value="Decline" />
                     </div>
                 </div>
 
@@ -25,11 +28,14 @@
     }
 }
 
-<h1>Index</h1>
+<div class="header">
+    <h1>Current Teams</h1>
+</div>
+
 @if (User.IsInRole("Student"))
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" class="btn btn-create">Create New</a>
     </p>
 }
 <table class="table">
@@ -42,33 +48,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            if (item.TeamLeaderEmail == ViewBag.email)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    </td>
-                </tr>
-
-            }
-        }
+                    @foreach (var item in Model)
+                    {
+                        if (item.TeamLeaderEmail == ViewBag.email)
+                        {
+                            <tr class="card">
+                                <td class="container">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-interact">Edit</a> 
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-interact">Details</a> 
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-interact">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-interact">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    }
     </tbody>
 </table>

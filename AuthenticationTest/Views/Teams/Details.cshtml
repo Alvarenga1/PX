@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
 <h1>Details</h1>
 
 <div>
@@ -49,7 +53,6 @@
                     {
                         <td>
                             <a asp-action="Delete" asp-route-id="@item.Email">Remove From Team</a>
-
                         </td>
                     }
                 </tr>
@@ -65,14 +68,15 @@
                 <input class="form-control" type="text" id="email" placeholder="Student Email E.g: 12345678@student.westernsydney.edu.au" name="email" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Invite" class="btn btn-primary" />
+                <input type="submit" value="Invite" class="btn btn-interact" />
             </div>
         </form>
     }
 
-        @if (ViewBag.email == Model.TeamLeaderEmail)
-        {
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-        }
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <a asp-action="Index" class="btn btn-back">Back to List</a>
+
+    @if (ViewBag.email == Model.TeamLeaderEmail)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-interact">Edit</a>
+    }
+</div>

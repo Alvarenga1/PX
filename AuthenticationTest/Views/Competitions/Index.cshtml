@@ -5,11 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<div class="header">
+    <h1>Current Events</h1>
+</div>
 @if (User.IsInRole("Staff"))
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" class="btn btn-create">Create New</a>
     </p>
 }
     <table class="table">
@@ -49,15 +55,15 @@
                 @if (User.IsInRole("Staff"))
                 {
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-interact">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-interact">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-interact">Delete</a>
                     </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-interact">Details</a>
                     </td>
                 }
             </tr>

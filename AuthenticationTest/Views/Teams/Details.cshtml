@@ -52,7 +52,7 @@
                     @if (ViewBag.email == Model.TeamLeaderEmail)
                     {
                         <td>
-                            <a asp-action="Delete" asp-route-id="@item.Email">Remove From Team</a>
+                            <a asp-action="Delete" asp-route-id="@item.Email" class="removetext">Remove From Team</a>
                         </td>
                     }
                 </tr>

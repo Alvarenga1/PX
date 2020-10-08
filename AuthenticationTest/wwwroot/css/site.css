@@ -78,11 +78,11 @@ h4 {
     cursor: pointer;
 }
 
+
 .btn-interact {
     background-color: #ff5e5e;
     color: white;
     font-weight: bold;
-    float: right;
 }
 
     .btn-interact:hover {
@@ -90,16 +90,26 @@ h4 {
         color: white;
     }
 
-.btn-create {
+.btn-interactsecondary {
     background-color: #ff5e5e;
     color: white;
-    float: right;
     font-weight: bold;
+    float:right;
 }
 
-    .btn-create:hover {
+    .btn-interactsecondary:hover {
         background-color: #990033;
         color: white;
+    }
+
+.removetext {
+    color: #be0f1f;
+    cursor: pointer;
+}
+
+    .removetext:hover {
+        color: #e51326;
+
     }
 
 h2 {

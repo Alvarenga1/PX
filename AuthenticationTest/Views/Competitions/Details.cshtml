@@ -44,7 +44,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index" class="btn btn-back">Back to List</a> |
+    <a asp-action="Index" class="btn btn-back">Back to List</a>
     @if (User.IsInRole("Staff"))
     {<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-interact">Edit</a>}
 </div>

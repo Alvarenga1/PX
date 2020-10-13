@@ -22,6 +22,9 @@ namespace AuthenticationTest.Data
         public DbSet<AuthenticationTest.Models.Student> Student { get; set; }
 
         public DbSet<AuthenticationTest.Models.Invite> Invite { get; set; }
+        public DbSet<AuthenticationTest.Models.Post> Post { get; set; }
+        public DbSet<AuthenticationTest.Models.Comment> Comment { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +34,8 @@ namespace AuthenticationTest.Data
             modelBuilder.Entity<Staff>().ToTable("Staff");
             modelBuilder.Entity<Invite>().ToTable("Invite");
             modelBuilder.Entity<Student>().ToTable("Student");
+            modelBuilder.Entity<Post>().ToTable("Post");
+            modelBuilder.Entity<Comment>().ToTable("Comment");
         }
 
     }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Student Competition Hub", "AuthenticationTest\Student Competition Hub.csproj", "{73FE9650-EC8D-434D-A255-543F16289465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationTest", "AuthenticationTest\AuthenticationTest.csproj", "{73FE9650-EC8D-434D-A255-543F16289465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,74 +5,100 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Team</h4>
+    <h1>@Html.DisplayFor(model => model.Name)</h1>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <div><h4>Members</h4></div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Email
-                </th>
+    <div>
+        <div><h4>Members</h4></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
 
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.members)
-            {
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.members)
+                {
 
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        @if (ViewBag.email == Model.TeamLeaderEmail)
+                        {
+                            <td>
+                                <a asp-action="Delete" asp-route-id="@item.Email">Remove From Team</a>
+
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.Supervisor != null)
+        {
+            <div><h4>Supervisor</h4></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td>
-                        @item.Name
+                        @Html.DisplayFor(model => model.Supervisor.Name)
                     </td>
                     <td>
-                        @item.Email
+                        @Html.DisplayFor(model => model.Supervisor.Email)
                     </td>
-                    @if (ViewBag.email == Model.TeamLeaderEmail)
-                    {
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@item.Email">Remove From Team</a>
-
-                        </td>
-                    }
                 </tr>
-            }
-        </tbody>
-    </table>
-    @if (ViewBag.email == Model.TeamLeaderEmail)
-    {
-        <form asp-action="Invite">
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label class="control-label">Invite a Student</label>
-                <input class="form-control" type="text" id="email" placeholder="Student Email E.g: 12345678@student.westernsydney.edu.au" name="email" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Invite" class="btn btn-primary" />
-            </div>
-        </form>
-    }
+            </tbody>
+        </table>
+        }
+        @if (ViewBag.email == Model.TeamLeaderEmail)
+        {
+    <form asp-action="Invite">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label class="control-label">Invite a Student</label>
+            <input class="form-control" type="text" id="email" placeholder="Student Email E.g: 12345678@student.westernsydney.edu.au" name="email" />
+        </div>
+        @if (ViewData.ModelState["Error"] != null)
+        {
+        <span class="field-validation-error">Please check the student email and try again.</span>
+        }
+        <div class="form-group">
+            <input type="submit" value="Invite" class="btn btn-primary" />
+        </div>
+    </form>
+        }
 
         @if (ViewBag.email == Model.TeamLeaderEmail)
         {
             <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        }
+
+        @if (User.IsInRole("Staff") && Model.Supervisor == null)
+        {
+
+            <a asp-action="JoinTeam" asp-route-id="@Model.Id">Supervise this team | </a>
         }
         <a asp-action="Index">Back to List</a>
     </div>

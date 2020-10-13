@@ -12,7 +12,7 @@
         <form asp-action="RespondToInvite">
             <div class="card">
                 <div class="card-body">
-                    You have been invited to a team, @invite.Team.Name would like you to join their team.<br />
+                    <p>You have been invited to a team, <b>@invite.Team.Name</b> would like you to join their team. Please note that if you already have a team accepting this invite will remove you from your current team.</p>
                     <div class="form-group">
                         <input type="hidden" name="id" value="@invite.Id" />
                         <input type="submit" class="btn btn-primary" name="submit" value="Accept"/>

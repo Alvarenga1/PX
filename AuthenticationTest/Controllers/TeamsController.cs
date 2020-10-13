@@ -29,7 +29,7 @@ namespace AuthenticationTest.Controllers
             ViewBag.email = email;
             var invites = _context.Invite.FromSqlRaw("SELECT * FROM Invite WHERE InvitedStudentEmail = ({0})", email);
             ViewBag.invites = invites;
-            return View(await _context.Team.ToListAsync());
+            return View(await _context.Team.Include("Supervisor").ToListAsync());
         }
 
         // GET: Teams/Details/5
@@ -40,8 +40,8 @@ namespace AuthenticationTest.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Team
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var team = await _context.Team.Include("Supervisor").
+                FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
             {
                 return NotFound();
@@ -61,6 +61,11 @@ namespace AuthenticationTest.Controllers
             return View();
         }
 
+        // InvalidStudent GET
+        public IActionResult InvalidStudent()
+        {
+            return View();
+        }
         // POST: Teams/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -102,9 +107,9 @@ namespace AuthenticationTest.Controllers
             return View(team);
         }
 
-        //JOIN TEAM POST
+        //STAFF JOIN TEAM POST
         [HttpPost]
-        [Authorize(Roles = "Student")]
+        [Authorize(Roles = "Staff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> JoinTeam(int id)
         {
@@ -112,17 +117,43 @@ namespace AuthenticationTest.Controllers
             var team = await _context.Team.FindAsync(id);
             //Find logged in user's email
             string _email = User.FindFirst(ClaimTypes.Name).Value;
+            // get staff's email
+            var staff = await _context.Staff.FindAsync(_email);
+            //assign staff as supervisor of the team
+            team.Supervisor = staff;
+            //Save changes to DB
+            await _context.SaveChangesAsync();
+            //Redirecto to index
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        //INVITE POST
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Invite(int id, string email)
+        {
+            //Find team by ID
+            var team = await _context.Team.FindAsync(id);
             // get student by email
-            var student = await _context.Student.FindAsync(_email);
-            //Assign student to team
-            student.Team = team;
+            var student = await _context.Student.FindAsync(email);
+            if(student == null)
+            {
+                return RedirectToAction(nameof(InvalidStudent));
+            }
+       
+
+            var invite = new Invite();
+            invite.Team = team;
+            invite.InvitedStudent = student;
+            _context.Add(invite);
             //Save changes to DB
             await _context.SaveChangesAsync();
             //Redirecto to index
             return RedirectToAction(nameof(Index));
         }
 
-        //ACCEPT POST
+        //RESPOND POST
         [HttpPost]
         [Authorize(Roles = "Student")]
         [ValidateAntiForgeryToken]
@@ -136,6 +167,11 @@ namespace AuthenticationTest.Controllers
                     string _email = User.FindFirst(ClaimTypes.Name).Value;
                     // get student by email
                     var student = await _context.Student.FindAsync(_email);
+                    //In case a student is the team leader of a team
+/*                    if (student.Team.TeamLeaderEmail == student.Email)
+                    {
+                        var members = _context.Student.FromSqlRaw("SELECT * FROM Student WHERE TeamId = ({0})", student.Team.Id);
+                    }*/
                     //Assign student to team
                     student.Team = invite.Team;
                     //Delete invite from DB
@@ -154,29 +190,6 @@ namespace AuthenticationTest.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-        //INVITE POST
-        [HttpPost]
-        [Authorize(Roles = "Student")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Invite(int id, string email)
-        {
-            //Find team by ID
-            var team = await _context.Team.FindAsync(id);
-            // get student by email
-            var student = await _context.Student.FindAsync(email);
-
-            var invite = new Invite();
-            invite.Team = team;
-            invite.InvitedStudent = student;
-            _context.Add(invite);
-            //Save changes to DB
-            await _context.SaveChangesAsync();
-            //Redirecto to index
-            return RedirectToAction(nameof(Index));
-        }
-
-
 
         // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)

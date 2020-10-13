@@ -1,0 +1,47 @@
+﻿@model AuthenticationTest.Models.Post
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Title)</h4>
+    <hr />
+    <p>
+        @Html.DisplayFor(model => model.Message)
+    </p>
+</div>
+
+@if (ViewBag.Comments != null)
+{
+    @foreach (var comment in ViewBag.Comments)
+    {
+        <div class="card">
+            <div class="card-header">
+                <a href="#">@comment.Student.Name</a> says:
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="id" value="@comment.Id" />
+                <p class="card-text">@comment.Message</p>
+
+            </div>
+        </div>
+        <br/>
+    }
+}
+<br/>
+<b>Add a comment</b>
+<form asp-action="Comment">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <textarea class="form-control" type="text" id="message" placeholder="Type your message here" name="message"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Comment" class="btn btn-primary" />
+    </div>
+</form>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

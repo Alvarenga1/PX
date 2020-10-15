@@ -26,21 +26,38 @@
                 @foreach (var item in ViewBag.members)
                 {
 
-                    <tr>
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    @if (ViewBag.email == Model.TeamLeaderEmail && ViewBag.email != item.Email)
+                    {
                         <td>
-                            @item.Name
+                            <form asp-action="RemoveFromTeam">
+                                <input type="hidden" value="@item.Email" id="studentEmail" name="studentEmail" />
+                                <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <input type="submit" value="Remove" class="btn btn-primary" />
+                                </div>
+                            </form>
                         </td>
+                    }
+                    @if (ViewBag.email == item.Email)
+                    {
                         <td>
-                            @item.Email
+                            <form asp-action="LeaveTeamStudent">
+                                <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <input type="submit" value="Leave Team" class="btn btn-primary" />
+                                </div>
+                            </form>
                         </td>
-                        @if (ViewBag.email == Model.TeamLeaderEmail)
-                        {
-                            <td>
-                                <a asp-action="Delete" asp-route-id="@item.Email">Remove From Team</a>
+                    }
 
-                            </td>
-                        }
-                    </tr>
+                </tr>
                 }
             </tbody>
         </table>
@@ -68,7 +85,18 @@
                     <td>
                         @Html.DisplayFor(model => model.Supervisor.Email)
                     </td>
-                </tr>
+                    @if (ViewBag.email == Model.Supervisor.Email)
+                    {
+                        <td>
+                            <form asp-action="LeaveTeam">
+                                <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <input type="submit" value="Leave" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </td>
+                    }
+                    </tr>
             </tbody>
         </table>
         }
@@ -80,10 +108,6 @@
             <label class="control-label">Invite a Student</label>
             <input class="form-control" type="text" id="email" placeholder="Student Email E.g: 12345678@student.westernsydney.edu.au" name="email" />
         </div>
-        @if (ViewData.ModelState["Error"] != null)
-        {
-        <span class="field-validation-error">Please check the student email and try again.</span>
-        }
         <div class="form-group">
             <input type="submit" value="Invite" class="btn btn-primary" />
         </div>

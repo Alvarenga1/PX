@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <input type="hidden" name="id" value="@invite.Id" />
                         <input type="submit" class="btn btn-primary" name="submit" value="Accept"/>
-                        <input type="button" class="btn btn-secondary" name="submit" value="Decline"/>
+                        <input type="submit" class="btn btn-secondary" name="submit" value="Decline"/>
                     </div>
                 </div>
 
@@ -26,7 +26,7 @@
 }
 
 <h1>Index</h1>
-@if (User.IsInRole("Student"))
+@if (User.IsInRole("Student") && ViewBag.student.Team == null)
 {
     <p>
         <a asp-action="Create">Create New</a>

@@ -27,6 +27,15 @@ namespace AuthenticationTest.Controllers
         {
             string email = User.FindFirst(ClaimTypes.Name).Value;
             ViewBag.email = email;
+            try
+            {
+                var student = _context.Student.Include("Team").Single(x => x.Email == email);
+                ViewBag.student = student;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             var invites = _context.Invite.FromSqlRaw("SELECT * FROM Invite WHERE InvitedStudentEmail = ({0})", email);
             ViewBag.invites = invites;
             return View(await _context.Team.Include("Supervisor").ToListAsync());
@@ -127,6 +136,62 @@ namespace AuthenticationTest.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        //LEAVE TEAM GET
+        public async Task<IActionResult> LeaveTeam(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var team = await _context.Team
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (team == null)
+            {
+                return NotFound();
+            }
+
+            return View(team);
+        }
+
+        //LEAVE TEAM POST
+        [HttpPost]
+        [Authorize(Roles = "Staff")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LeaveTeam(int id)
+        {
+            //Find team by ID
+            var team = await _context.Team.FindAsync(id);
+            if (team != null)
+            {
+                _context.Database.ExecuteSqlCommand("UPDATE Team SET SupervisorEmail = NULL WHERE Id = ({0})", id);
+            }
+            //Save changes to DB
+            await _context.SaveChangesAsync();
+            //Redirecto to index
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        //LEAVE TEAM POST
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LeaveTeamStudent(int id)
+        {
+            //Find team by ID
+            var team = await _context.Team.FindAsync(id);
+            string _email = User.FindFirst(ClaimTypes.Name).Value;
+            // get staff's email
+            var student = await _context.Student.FindAsync(_email);
+            if (student != null)
+            {
+                _context.Database.ExecuteSqlCommand("UPDATE Student SET TeamId = NULL WHERE Email = ({0})", _email);
+            }
+            //Save changes to DB
+            await _context.SaveChangesAsync();
+            //Redirecto to index
+            return RedirectToAction(nameof(Details), new { id });
+        }
         //INVITE POST
         [HttpPost]
         [Authorize(Roles = "Student")]
@@ -141,7 +206,14 @@ namespace AuthenticationTest.Controllers
             {
                 return RedirectToAction(nameof(InvalidStudent));
             }
-       
+
+            //If there's already one invite in the DB don't create another
+            var count = _context.Invite.Count(x => x.InvitedStudent.Email == email && x.Team == team);
+            if (count >= 1)
+            {
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
 
             var invite = new Invite();
             invite.Team = team;
@@ -150,7 +222,7 @@ namespace AuthenticationTest.Controllers
             //Save changes to DB
             await _context.SaveChangesAsync();
             //Redirecto to index
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         //RESPOND POST
@@ -218,12 +290,6 @@ namespace AuthenticationTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Team team)
         {
-
-            if (User.FindFirst(ClaimTypes.Name).Value != team.TeamLeaderEmail)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             if (id != team.Id)
             {
                 return NotFound();
@@ -233,7 +299,7 @@ namespace AuthenticationTest.Controllers
             {
                 try
                 {
-                    _context.Update(team);
+                    _context.Database.ExecuteSqlCommand("UPDATE Team SET Name = ({1}) WHERE Id = ({0})", id,team.Name);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -284,9 +350,21 @@ namespace AuthenticationTest.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+            _context.Database.ExecuteSqlCommand("UPDATE Student SET TeamId = NULL WHERE TeamId = ({0})", id);
             _context.Team.Remove(team);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Teams/RemoveFromTeam
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromTeam(string studentEmail, int id)
+        {
+            var student = await _context.Student.FindAsync(studentEmail);
+            _context.Database.ExecuteSqlCommand("UPDATE Student SET TeamId = NULL WHERE Email = ({0})", studentEmail);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         private bool TeamExists(int id)

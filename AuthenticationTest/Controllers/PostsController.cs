@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using AuthenticationTest.Data;
 using AuthenticationTest.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthenticationTest.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +25,10 @@ namespace AuthenticationTest.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Post.ToListAsync());
+            string email = User.FindFirst(ClaimTypes.Name).Value;
+            ViewBag.email = email;
+
+            return View(await _context.Post.Include("Student").ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -78,7 +83,7 @@ namespace AuthenticationTest.Controllers
                 post.Student = student;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction(nameof(Details), new { post.Id });
             }
             return View(post);
         }

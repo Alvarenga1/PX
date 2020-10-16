@@ -20,13 +20,20 @@
         <div class="card">
             <div class="card-header">
                 <a href="#">@comment.Student.Name</a> says:
-            </div>
+                </div>
             <div class="card-body">
                 <input type="hidden" name="id" value="@comment.Id" />
                 <p class="card-text">@comment.Message</p>
-
+                @if (ViewBag.email == comment.Student.Email)
+                {
+            <form asp-action="DeleteComment">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" id="commentId" name="commentId" value="@comment.Id" />
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </form>
+                        }
+                </div>
             </div>
-        </div>
         <br/>
     }
 }

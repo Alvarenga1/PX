@@ -109,9 +109,24 @@ namespace AuthenticationTest.Controllers
                 comment.Post = await _context.Post.FindAsync(id);
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id });
             }
             return View();
+        }
+
+        //DELETE Comment POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComment(int id, int commentId)
+        {
+
+                var comment = await _context.Comment.FindAsync(commentId);
+                if (comment != null)
+                {
+                    _context.Comment.Remove(comment);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction(nameof(Details), new { id });
         }
 
         // GET: Posts/Edit/5

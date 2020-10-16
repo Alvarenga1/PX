@@ -12,9 +12,11 @@ namespace AuthenticationTest.Models
     {
         public int Id { get; set; }
         [Required]
+        [StringLength(25, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public String Name { get; set; }
 
         [Display(Name = "Unit Credit")]
+        [StringLength(25, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public String Credit { get; set; }
         [Required]
         public String Description { get; set; }

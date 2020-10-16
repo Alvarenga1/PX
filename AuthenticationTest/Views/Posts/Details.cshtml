@@ -31,6 +31,7 @@
     }
 }
 <br/>
+@if(User.IsInRole("Student")){ 
 <b>Add a comment</b>
 <form asp-action="Comment">
     <input type="hidden" asp-for="Id" />
@@ -41,7 +42,12 @@
         <input type="submit" value="Comment" class="btn btn-primary" />
     </div>
 </form>
+}
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (ViewBag.email == Model.Student.Email)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                                                               
+    }
+<a asp-action="Index">Back to List</a>
 </div>

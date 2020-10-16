@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AuthenticationTest.Models;
 using Microsoft.AspNetCore.Authorization;
+using AuthenticationTest.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationTest.Controllers
 {
@@ -14,14 +16,22 @@ namespace AuthenticationTest.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+
+            var competition = _context.Competition.FromSqlRaw("SELECT TOP 1 * FROM Competition ORDER BY ID DESC");
+            if (competition.Count() > 0)
+            {
+                ViewBag.recentEvent = competition.First();
+            }
             return View();
         }
 

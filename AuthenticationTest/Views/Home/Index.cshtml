@@ -30,9 +30,21 @@
         <p>We have many competitions available join now to learn new skills and earn credits towards your degree!</p>
     </div>
     <div class="col-sm-6">
-        <h2>Useful links</h2>
-        <ul>
-            <li><a href="https://www.westernsydney.edu.au/">Western Sydney University</a></li>
-        </ul>
+        <h2>Featured Event</h2>
+        @if (ViewBag.recentEvent != null)
+        {
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.recentEvent.Name</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@ViewBag.recentEvent.Date</h6>
+            <p class="card-text">@ViewBag.recentEvent.Description</p>
+            <a class="card-link" asp-action="Details" asp-route-id="@ViewBag.recentEvent.Id" asp-controller="Competitions">More</a>
+        </div>
+    </div>
+        }
+        else
+        {
+            <p>The are currently no events.</p>
+        }
     </div>
 </div>

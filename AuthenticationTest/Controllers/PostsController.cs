@@ -39,12 +39,16 @@ namespace AuthenticationTest.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post
+
+            var post = await _context.Post.Include("Student")
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
+
+            string email = User.FindFirst(ClaimTypes.Name).Value;
+            ViewBag.email = email;
 
             //var comments = _context.Comment.FromSqlRaw("SELECT * FROM Comment WHERE PostId = ({0})", post.Id);
             var comments = _context.Comment.Include("Student").Include("Post").Where(x => x.Post.Id == post.Id);
@@ -185,8 +189,12 @@ namespace AuthenticationTest.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Post.FindAsync(id);
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
+            if (post != null)
+            {
+                _context.Database.ExecuteSqlCommand("DELETE FROM Comment WHERE PostId = ({0})", id);
+                _context.Post.Remove(post);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

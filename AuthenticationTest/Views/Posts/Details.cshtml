@@ -6,55 +6,66 @@
 }
 
 <div>
-    <h4>@Html.DisplayFor(model => model.Title)</h4>
+    <h3>Posted In @Html.DisplayFor(model => model.Competition.Name)</h3>
     <hr />
-    <p>
-        @Html.DisplayFor(model => model.Message)
-    </p>
-</div>
+    <div class="card">
+        <div class="card-header"><b>@Html.DisplayFor(model => model.Title)</b> </br> Created By: <a href="#">
+    @Html.DisplayFor(model => model.Student.Name)
+</a> </br>        
+         @if (ViewBag.email == Model.Student.Email)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit Post</a>
 
-@if (ViewBag.Comments != null)
+        }
+</div>
+        <div class="card-body">
+            @Html.DisplayFor(model => model.Message)
+        </div>
+    </div>
+</div>
+</br>
+@if (User.IsInRole("Student"))
 {
-    @foreach (var comment in ViewBag.Comments)
+    <b>Add a comment</b>
+    <form asp-action="Comment">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <textarea class="form-control" type="text" id="message" placeholder="Type your message here" name="message"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Comment" class="btn btn-primary" />
+        </div>
+    </form>
+}
+</br>
+<div>
+
+    <h3>Comments</h3>
+
+    @if (ViewBag.Comments != null)
     {
-        <div class="card">
-            <div class="card-header">
-                <a href="#">@comment.Student.Name</a> says:
+        @foreach (var comment in ViewBag.Comments)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <a href="#">@comment.Student.Name</a> says:
                 </div>
-            <div class="card-body">
-                <input type="hidden" name="id" value="@comment.Id" />
-                <p class="card-text">@comment.Message</p>
-                @if (ViewBag.email == comment.Student.Email)
-                {
-            <form asp-action="DeleteComment">
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" id="commentId" name="commentId" value="@comment.Id" />
-                <input type="submit" value="Delete" class="btn btn-primary" />
-            </form>
-                        }
+                <div class="card-body">
+                    <input type="hidden" name="id" value="@comment.Id" />
+                    <p class="card-text">@comment.Message</p>
+                    @if (ViewBag.email == comment.Student.Email)
+                    {
+                        <form asp-action="DeleteComment">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" id="commentId" name="commentId" value="@comment.Id" />
+                            <input type="submit" value="Delete" class="btn btn-primary" />
+                        </form>
+                    }
                 </div>
             </div>
-        <br/>
+            <br />
+        }
     }
-}
-<br/>
-@if(User.IsInRole("Student")){ 
-<b>Add a comment</b>
-<form asp-action="Comment">
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <textarea class="form-control" type="text" id="message" placeholder="Type your message here" name="message"></textarea>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Comment" class="btn btn-primary" />
-    </div>
-</form>
-}
-<div>
-    @if (ViewBag.email == Model.Student.Email)
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                                                               
-    }
-<a asp-action="Index">Back to List</a>
+    <br />
+    <a asp-action="Index">Back to List</a>
 </div>

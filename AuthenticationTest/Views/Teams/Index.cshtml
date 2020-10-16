@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AuthenticationTest.Models.Team>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Teams";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -25,7 +25,7 @@
     }
 }
 
-<h1>Index</h1>
+<h1>Teams</h1>
 @if (User.IsInRole("Student") && ViewBag.student.Team == null)
 {
     <p>

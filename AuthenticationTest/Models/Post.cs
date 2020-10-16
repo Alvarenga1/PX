@@ -14,7 +14,7 @@ namespace AuthenticationTest.Models
         public String Title { get; set; }
         [Required]
         public String Message { get; set; }
-        public int CompetitionID { get; set; }
+        public Competition Competition { get; set; }
         public Student Student { get; set; }
 
     }

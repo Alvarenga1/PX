@@ -28,7 +28,7 @@ namespace AuthenticationTest.Controllers
             string email = User.FindFirst(ClaimTypes.Name).Value;
             ViewBag.email = email;
 
-            return View(await _context.Post.Include("Student").ToListAsync());
+            return View(await _context.Post.Include("Student").Include("Competition").ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -40,7 +40,7 @@ namespace AuthenticationTest.Controllers
             }
 
 
-            var post = await _context.Post.Include("Student")
+            var post = await _context.Post.Include("Student").Include("Competition")
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
@@ -72,19 +72,18 @@ namespace AuthenticationTest.Controllers
             return View();
         }
 
-        // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Message,CompetitionID")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,Title,Message")] Post post, int competitionId)
         {
             if (ModelState.IsValid)
             {
                 string _email = User.FindFirst(ClaimTypes.Name).Value;
                 // check whether the user already exists in database
                 var student = await _context.Student.FindAsync(_email);
+                var competition = await _context.Competition.FindAsync(competitionId);
                 post.Student = student;
+                post.Competition = competition;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), new { post.Id });

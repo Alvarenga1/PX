@@ -2,15 +2,13 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-    font-size: 30px;
     white-space: normal;
     text-align: center;
     word-break: break-all;
-    height: 60px;
 }
 
 .title {
-    font-size: 90px;
+    font-size: 50px;
 }
 
 /* Provide sufficient contrast against white background */
@@ -36,14 +34,11 @@ a.navbar-brand {
     border-bottom: 3px solid #990033;
 }
 
-h4 {
-    color: #990033;
-}
 
 /* Team interface edits */
 .header {
     background-color: #990033;
-    color: #ffffff;
+    color: #eac3c2;
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10%;
@@ -62,6 +57,7 @@ h4 {
     padding: 2px 16px;
 }
 
+
 .row {
     margin: 0 10px;
     padding: 2px 16px;
@@ -79,11 +75,11 @@ h4 {
     cursor: pointer;
 }
 
+
 .btn-interact {
     background-color: #ff5e5e;
     color: white;
     font-weight: bold;
-    float: right;
 }
 
     .btn-interact:hover {
@@ -91,16 +87,25 @@ h4 {
         color: white;
     }
 
-.btn-create {
+.btn-interactsecondary {
     background-color: #ff5e5e;
     color: white;
-    float: right;
     font-weight: bold;
+    float: right;
 }
 
-    .btn-create:hover {
+    .btn-interactsecondary:hover {
         background-color: #990033;
         color: white;
+    }
+
+.removetext {
+    color: #be0f1f;
+    cursor: pointer;
+}
+
+    .removetext:hover {
+        color: #e51326;
     }
 
 h2 {
@@ -119,7 +124,7 @@ h2 {
 }
 
     .btn-back:hover {
-        background-color: blue;
+        background-color: #CDCDCD;
     }
 
 /* Sticky footer styles
@@ -161,11 +166,24 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-image: url(../images/lowpoly.png);
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #990033;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right top;
-/*    -webkit-background-size: cover;
+    /*    -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;*/
     background-size: cover;
@@ -182,11 +200,15 @@ h2 {
 }
 
 a:visited {
-    color: pink;
+    color: white;
+}
+
+a:link {
+    color: white;
 }
 
 a:hover {
-    color: blueviolet;
+    text-decoration: underline;
 }
 
 .footer {
@@ -194,17 +216,37 @@ a:hover {
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    line-height: 60px; /* Vertically center the text there */
+    line-height: 60px;
 }
+
 
 .container {
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
     border-radius: 5px;
     background-color: rgba(255, 255, 255, .15);
+    color: white;
 }
 
 .carousel-inner {
     height: 300px;
     border-radius: 75px;
     overflow: hidden;
+}
+
+.card {
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .15);
+}
+
+.card-home {
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    width: 27vw;
+    background-color: rgba(255, 255, 255, .15);
+}
+
+.card-date {
+    color: white;
 }
